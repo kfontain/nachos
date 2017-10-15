@@ -17,6 +17,9 @@
 \newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
 \hspace{-2.5pt}}
 \newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\xmark}}
+\newcommand*{\escape}[1]{\texttt{\textbackslash#1}}
+\newcommand*{\escapeI}[1]{\texttt{\expandafter\string\csname #1\endcsname}}
+\newcommand*{\escapeII}[1]{\texttt{\char`\\#1}}
 
 %% Sets page size and margins
 \usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
@@ -72,118 +75,52 @@ matériel. \\
 L'objectif de ce devoir est de mettre en place sous Nachos un système
 d'entrée-sortie minimale, permettant d'éxecuter de petits programmes.
 L'ensemble des modifications apportées sont entre balises \#ifdef CHANGED et
-\#endif.
+\#endif. \\
 
 %-------------------------------------------------------------------------------
-% Partie 1
+% Bilan
 %-------------------------------------------------------------------------------
 
-\section{Partie 1 : Quel est le but?}
+\section{Bilan}
 
+\subsection{Partie 1}
 L'objectif de cette première partie est de créer un programme de test : putchar.c.
-Ce programme est placé dans le dossier code/test.
-Nous pouvons l'éxecuter depuis le dossier /code/userprog. La sortie attendue est
-"abcd".
+Ce programme est placé dans le dossier /code/test. \\
+La sortie attendue est "abcd", que nous arrivons à obtenir. La fonction nous
+paraissait relativement simple et ses appels par la suite ne nous ayant pas posé
+de problème particulier, nous n'avons pas pris le temps de tester certains cas
+plus particuliers.
 
-\begin{minted}{bash}
-$ ~/nachos/code/userprog ./nachos -x ../test/putchar
-\end{minted}
-
-%-------------------------------------------------------------------------------
-% Partie 2
-%-------------------------------------------------------------------------------
-
-\section{Partie 2 : Entrées-sorties asynchrones}
-
-Nachos offre une version primitive d'entrées-sorties par la classe Console dans
-machine/console.h. \\
-C'est une erreur de vouloir lire un caractère avant d'être averti qu'un caractère
+\subsection{Partie 2}
+Cette partie était relativement légère en code et était plutôt faite pour nous
+aider à mieux comprendre le mécanisme d'entrée-sortie de Nachos et aussi de nous
+faire comprendre en quoi lire un caractère avant d'être averti qu'un caractère
 soit disponible. En effet, la lecture se faisant au moment de l'appel, si nous
 n'avons pas l'assurance qu'un caractère soit disponible, nous allons lire ce
 qu'il y a dans le buffer, autrement dit nous allons obtenir un caractère inattendu. \\
+Les fichiers de tests ne peuvent être plus executés à cause de la partie 4, mais
+nous pensons avoir bien réussi cette partie.
 
-Les fichiers de tests ne peuvent être plus executés à cause de la partie 4, nous
-ne pouvons pas instancier 2 consoles.
-Cependant, cette partie nous a permi de mieux prendre en main la partie console
-de Nachos.
+\subsection{Partie 3}
+Cette troisième partie a pour but de rendre synchrones les fonctions de la partie
+précédente. Pour se faire, nous avons utilisés des sémaphores. Il nous aura fallu
+un peu de temps et quelques explications, mais cette partie ne nous n'a pas posé
+de problème particulier. Cette partie nous a permis de comprendre le fonctionnement
+des sémaphores lorsqu'elles sont initialiées à 0, permettant de synchroniser
+des processus. Un premier processus va, après avoir effectuer son travail, réveiller
+un deuxième processus; qui ne pourra pas commencer son travail tant qu'il n'aura
+pas reçu ce réveil.
 
-%-------------------------------------------------------------------------------
-% Partie 3
-%-------------------------------------------------------------------------------
-
-\section{Partie 3 : Entrées-sorties synchrones}
-
-TODO
-
-%-------------------------------------------------------------------------------
-% Partie 4
-%-------------------------------------------------------------------------------
-
-\newpage
-\section{Partie 4 : Appel Système Putchar}
-
+\subsection{Partie 4}
 L'objectif de cette partie est de mettre en place un appel système PutChar(c),
 qui prend en argument un caractère c en mode utilisateur, puis lève une interruption
 SyscallException. La SyscallException va provoquer un passage en mode noyau et
 l'éxecution du traitant standard, ExceptionHandler. \\
-
-Voici le code de la fonction PutChar(c), dans le fichier /test/start.S. Elle
-permet de lever une interruption SC\_PutChar qui sera gérée par l'ExceptionHandler.
-\begin{minted}{gas}
-    .global PutChar
-    .ent PutChar
-PutChar:
-    addiu $2, $0, SC_PutChar
-    syscall
-    j   $31
-    .end PutChar
-\end{minted}
-
-Voici le code du cas SC\_PutChar de l'ExceptionHandler, dans le fichier
-/userprog/exception.cc. Elle récupère le caractère saisi dans le registre 4 avant
-de l'afficher.
-
-\begin{minted}{cpp}
-    case SC_PutChar :
-    {
-        DEBUG('s', "PutChar\n");
-        int ch = machine->ReadRegister(4);
-        synchconsole->SynchPutChar(ch);
-        break;
-    }
-\end{minted}
-
-Un fichier de test pour PutChar.c est disponible dans le dossier code/test/putchar.c.
-Pour l'éxecuter lancer la commande depuis code/userprog. \\
-On attend "abcd" en sortie.
-
-\begin{minted}{bash}
-$ ~/nachos/code/userprog ./nachos -x ../test/putchar
-abcd
-\end{minted}
-
-
-%-------------------------------------------------------------------------------
-% Partie 5
-%-------------------------------------------------------------------------------
+Nous avons suivi le sujet et cette partie ne nous a pas posé de problème particulier.
 
 \newpage
-\section{Des caractères aux chaînes}
-
-Le but de cette 5ème partie est d'étendre le travail précédent afin de gérer des
-chaines de caractères.
-
-Nous avons commencé par compléter la méthode SynchPutString. Elle prend en
-paramètre une chaine de caractères et va l'afficher caractère par caractère.
-\begin{minted}{c++}
-	void SynchConsole::SynchPutString(const char s[]) {
-	    int i = 0;
-	    while (s[i] != '\0' && s[i] != EOF) {
-	      this->SynchPutChar(s[i]);
-	      i++;
-	    }
-	}
-\end{minted}
+\subsection{Partie 5}
+Cette partie a pour but de bufferisées la fonction putChar.
 
 Pour l'implémentation de copyStringFromMachine, nous avons choisi de la mettre
 en tant que fonction dans le fichier /code/userprog/synchconsole.cc. Cette fonction
@@ -191,72 +128,125 @@ copie une chaine de caractère du monde utilisateur vers le monde noyau. Pour ce
 nous devons faire le lien entre ces deux mondes en utilisant les classes SynchConsole
 et Machine. De par ces critères, nous avons jugé pertinnent de mettre cette fonction
 dans synchconsole.cc où une instance de machine était facilement créable. \\
-Voici le code la fonction en question :
 
-\begin{minted}{c++}
-	int copyStringFromMachine(int from, char *to, unsigned size) {
-	    if(size < 1)
-	      return 0;
-	    unsigned i = 0;
-	    int val = 0;
-	    do {
-	      machine->ReadMem(from+i, 1, &val);
-	      to[i] = (char)val;
-	      i++;
-	    } while(i < size && (char)val != '\0' && (char)val != EOF);
-	    if (i == size)
-	      to[i] = '\0';
-	    return i;
-	}
-\end{minted}
+Nous avons testé plusieurs cas pour notre implémentation; chaîne courte, trop longue
+, taille impaire/première. La fonction semblait marcher comme attendu et nous sommes
+donc passer à la partie suivante.
 
-Par la suite, nous avons implémenté l'appel système PutString, utilisant
-copyStringFromMachine et SynchPutString. Il n'est pas raisonnable d'allouer un
-buffer de la même taille que la chaîne MIPS. Si un utilisateur malveillant
-rentrait une chaîne de taille démusurée, on se retrouverait à allouer un buffer
-de taille beaucoup trop importante, pouvant causer des problèmes critiques. \\
-Voici le code l'appel PutString, dans le fichier /code/userprog/exception.cc :
+\subsection{Partie 6}
+Lorsque nous avons enlevé l'appel à la fonction Halt(), nous avons obtenu
+un message d'erreur comme quoi l'interpution SC\_Exit n'est pas gérée par
+l'ExceptionHandler. Pour éviter cela, nous avons ajouter le cas SC\_Exit dans le
+switch. Nous pouvons lire la valeur de retour de main qui est sauvegardée dans
+le registre 2 lorsque celle-ci est déclarée à valeur entière.
 
-\begin{minted}{c++}
-	case SC_PutString:
-	  {
-		DEBUG('s', "PutString\n");
-		int from = machine->ReadRegister(4);
-		char* s = (char*)malloc(MAX_STRING_SIZE * sizeof(char));
-		int n = 0, m = 0;
-		do {
-		  n = copyStringFromMachine(from + m, s, MAX_STRING_SIZE);
-		  synchconsole->SynchPutString(s);
-		  m += n;
-		} while (n == MAX_STRING_SIZE && s[n-1] != '\0');
-		free(s);
-		break;
-	  }
-\end{minted}
+\subsection{Partie 7}
+Cette partie a pour but d'implémenter les appels systèmes GetChar et GetString.
+Cette partie nous a posé beaucoup de problèmes et nous y avons passer beaucoup de
+temps. Expliquée plus en détails dans la partie suivante.
 
-Un fichier de test est disponible pour PutString, dans le dossier /code/test/putstring.c.
-A lancer de façon similaire aux autres fichiers de tests. La taille de la chaîne
-entrée par l'utilisateur est bien plus longue que la taille du buffer MAX\_STRING\_SIZE.
-La sortie attendue est décrite en commentaire dans le fichier en question.
-\begin{minted}{bash}
-$ ~/nachos/code/userprog ./nachos -x ../test/putstring
-\end{minted}
+\subsection{Partie 7 Bonus}
+
+GCharlet001
+
+\subsection{Partie 8}
+Nous n'avons malheureusement pas eu le temps de nous pencher sur cette partie-là.
 
 %-------------------------------------------------------------------------------
-% Problèmes rencontrés
+% Points délicats
 %-------------------------------------------------------------------------------
 
 \newpage
-\section{Problèmes rencontrés}
+\section{Points délicats}
+
+Nos principales difficultés viennent de notre négligence vis à vis des tests de
+nos fonctions. Nous n'avons pas pris la peine de tester suffisament de cas limites.
+Nous avons eu de la chance pour les premières fonctions du devoir, les appels de
+ces fonctions dans les parties suivantes ne nous ont pas posé de problème. \\
+
+Lorsque nous avons implémenter la partie 5, nous avons testé quelques cas limites
+afin de vérifier son bon comportement. Ayant obtenu les résultats attendus, nous
+ne sommes pas attardés sur ses tests. \\
+
+Puis nous nous sommes attaqués à la partie 7. Notre fichier de test pour la partie
+7 faisait appel à PutChar, de la partie 5. Une fois arrivée à la phase de test de
+la partie 7, nous avons obtenu plusieurs erreurs d'origines inconnues. Malgrès
+plusieurs tentatives différentes, nous n'avons pas réussi à corriger ces erreurs.
+Nous avons donc décider d'essayer d'isoler le problème et avons rajouter des \escape{0}
+à la fin de chacune de nos sous-chaînes de caractères ainsi que des appels à printf.
+C'est à ce moment-là que nous nous sommes rendus compte que le problème ne venait
+pas de GetString, mais bien de PutString. Il s'agissait d'un cas particulier de
+PutString que nous n'avions pas pris le temps de tester; la taille du buffer était
+un multiple de la taille de chaîne, ce qui avait pour effet de faire un tour de boucle
+de plus que prévu.
+
 
 %-------------------------------------------------------------------------------
-% Conclusion
+% Limitations
 %-------------------------------------------------------------------------------
 
-\section{Conclusion}
+\section{Limitations}
+
+TODO
 
 %-------------------------------------------------------------------------------
-% In the end
+% Tests
+%-------------------------------------------------------------------------------
+
+\newpage
+\section{Tests}
+
+Les fichiers de tests se trouvent dans le dossier /code/test. Ils sont exécutables
+en utilisant la commande suivante :
+
+\begin{minted}{bash}
+$ ~/nachos/code/userprog ./nachos -x ../test/<fichier_test>
+\end{minted}
+
+\subsection{Partie 1 à 3}
+
+Nous n'avons pas pris le temps de tester entièrement ces fonctions. Leur implémentation
+était relativement simple et elles ne semblaient pas posé problème par la suite.
+Nous pensons que ces fonctions se comportent normalement. De plus, les tests des
+parties 2 et 3 ne sont plus exécutables à cause de l'implémentation de la partie 4.
+
+\subsection{Partie 4 : PutChar}
+
+Pour cette partie, nous avons essayer d'attendre longtemps avant de taper le
+caractère en entrée, le taper "vite". Nous avons également essayer des caractères
+spéciaux comme \escape{n} ou \escape{0}.
+
+\subsection{Partie 5 : PutString}
+
+Pour les tests de cette fonction nous devions jouer sur le buffer
+MAX\_STRING\_SIZE et la chaîne de caractères entrée par l'utilisateur. Nous avons
+essayé un buffer petit par rapport à la chaîne, afin d'avoir plusieurs tour de boucle.
+Nous avons également essayé des chaînes plus petites que le buffer. Des valeurs
+paires/impaires de taille. Un des cas que nous n'avions pas testé est un buffer petit
+dont la taille est un diviseur de la taille de la chaîne de l'utilisateur (Taille
+4 pour le buffer et taille 16 pour la chaîne).
+
+\subsection{Partie 6 : Halt() et SC\_Exit}
+
+Nous n'avons pas fait de test particulier pour cette partie. Nous avons simplement
+ajouté le cas SC\_Exit au switch case de l'ExceptionHandler et avons relancé le
+fichier test PutChar, qui se comportait comme prévu.
+
+\subsection{Partie 7 : GetString}
+
+Les tests effectués pour cette partie sont similaires à ceux de la partie 5. Nous
+avons joué sur les tailles relatives du buffer et de la chaîne de caractères à
+récupérer. Le cas nous ayant posé problème à cause de PutString était avec un buffer
+petit et une chaîne longue (Buffer de taille 4 et chaîne de taille 16). Le fait
+d'appeler PutString sans être certain de son bon fonctionnement nous a fait perdre
+du temps.
+
+\subsection{Partie 7 : Bonus}
+
+GCharlet001
+
+%-------------------------------------------------------------------------------
+% END
 %-------------------------------------------------------------------------------
 
 \end{document}
