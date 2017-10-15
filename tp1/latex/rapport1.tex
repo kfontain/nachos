@@ -73,7 +73,7 @@ l'utilisateur, les applications et le matériel.
 Nachos est un processus permettant d'émuler un système d'exploitation et du
 matériel. \\
 L'objectif de ce devoir est de mettre en place sous Nachos un système
-d'entrée-sortie minimale, permettant d'éxecuter de petits programmes.
+d'entrées-sorties minimales, permettant d'exécuter de petits programmes.
 L'ensemble des modifications apportées sont entre balises \#ifdef CHANGED et
 \#endif. \\
 
@@ -88,26 +88,26 @@ L'objectif de cette première partie est de créer un programme de test : putcha
 Ce programme est placé dans le dossier /code/test. \\
 La sortie attendue est "abcd", que nous arrivons à obtenir. La fonction nous
 paraissait relativement simple et ses appels par la suite ne nous ayant pas posé
-de problème particulier, nous n'avons pas pris le temps de tester certains cas
+de problèmes particuliers, nous n'avons pas pris le temps de tester certains cas
 plus particuliers.
 
 \subsection{Partie 2}
 Cette partie était relativement légère en code et était plutôt faite pour nous
-aider à mieux comprendre le mécanisme d'entrée-sortie de Nachos et aussi de nous
+aider à mieux comprendre le mécanisme d'entrées-sorties de Nachos et aussi de nous
 faire comprendre en quoi lire un caractère avant d'être averti qu'un caractère
 soit disponible. En effet, la lecture se faisant au moment de l'appel, si nous
 n'avons pas l'assurance qu'un caractère soit disponible, nous allons lire ce
 qu'il y a dans le buffer, autrement dit nous allons obtenir un caractère inattendu. \\
-Les tests ./nachos -c et ./nachos -sc ne peuvent plus être executés à cause de
+Les tests ./nachos -c et ./nachos -sc ne peuvent plus être exécutés à cause de
 la partie 4, mais nous pensons avoir bien réussi cette partie.
 
 \subsection{Partie 3}
 Cette troisième partie a pour but de rendre synchrones les fonctions de la partie
-précédente. Pour se faire, nous avons utilisés des sémaphores. Il nous aura fallu
-un peu de temps et quelques explications, mais cette partie ne nous n'a pas posé
-de problème particulier. Cette partie nous a permis de comprendre le fonctionnement
-des sémaphores lorsqu'elles sont initialiées à 0, permettant de synchroniser
-des processus. Un premier processus va, après avoir effectuer son travail, réveiller
+précédente. Pour ce faire, nous avons utilisé des sémaphores. Il nous aura fallu
+un peu de temps et quelques explications, mais cette partie ne nous n'a pas posés
+de problèmes particuliers. Cette partie nous a permis de comprendre le fonctionnement
+des sémaphores lorsqu'elles sont initialisées à 0, permettant de synchroniser
+des processus. Un premier processus va, après avoir effectué son travail, réveiller
 un deuxième processus; qui ne pourra pas commencer son travail tant qu'il n'aura
 pas reçu ce réveil.
 
@@ -116,27 +116,27 @@ L'objectif de cette partie est de mettre en place un appel système PutChar(c),
 qui prend en argument un caractère c en mode utilisateur, puis lève une interruption
 SyscallException. La SyscallException va provoquer un passage en mode noyau et
 l'éxecution du traitant standard, ExceptionHandler. \\
-Nous avons suivi le sujet et cette partie ne nous a pas posé de problème particulier.
+Nous avons suivi le sujet et cette partie ne nous a pas posés de problèmes particuliers.
 
 \newpage
 \subsection{Partie 5}
-Cette partie a pour but de bufferisées la fonction putChar.
+Cette partie a pour but de buffériser la fonction putChar.
 
 Pour l'implémentation de copyStringFromMachine, nous avons choisi de la mettre
 en tant que fonction dans le fichier /code/userprog/synchconsole.cc. Cette fonction
 copie une chaine de caractère du monde utilisateur vers le monde noyau. Pour cela,
 nous devons faire le lien entre ces deux mondes en utilisant les classes SynchConsole
-et Machine. De par ces critères, nous avons jugé pertinnent de mettre cette fonction
+et Machine. De par ces critères, nous avons jugé pertinent de mettre cette fonction
 dans synchconsole.cc où une instance de machine était facilement créable. \\
 
 Nous avons testé plusieurs cas pour notre implémentation; chaîne courte, trop longue
 , taille impaire/première. La fonction semblait marcher comme attendu et nous sommes
-donc passer à la partie suivante.
+donc passé à la partie suivante.
 
 \subsection{Partie 6}
 Lorsque nous avons enlevé l'appel à la fonction Halt(), nous avons obtenu
-un message d'erreur comme quoi l'interpution SC\_Exit n'est pas gérée par
-l'ExceptionHandler. Pour éviter cela, nous avons ajouter le cas SC\_Exit dans le
+un message d'erreur comme quoi l'interruption SC\_Exit n'est pas gérée par
+l'ExceptionHandler. Pour éviter cela, nous avons ajouté le cas SC\_Exit dans le
 switch. Nous pouvons lire la valeur de retour de main qui est sauvegardée dans
 le registre 2 lorsque celle-ci est déclarée à valeur entière.
 
@@ -144,18 +144,18 @@ le registre 2 lorsque celle-ci est déclarée à valeur entière.
 Cette partie a pour but d'implémenter les appels systèmes GetChar et GetString.
 
 Comme à la partie 5, où nous avons créé la fonction copyStringFromMachine, nous
-avons créé la fonction copyStringToMachine. Cet fonction copie une chaine de
+avons créé la fonction copyStringToMachine. Cette fonction copie une chaine de
 caractère du monde noyau vers le monde utilisateur, nous avons donc choisi de la
 mettre dans le même fichier que la fonction copyStringFromMachine.\\
 
-Cette partie nous a posé beaucoup de problèmes et nous y avons passer beaucoup de
+Cette partie nous a posé beaucoup de problèmes et nous y avons passé beaucoup de
 temps. Expliquée plus en détails dans la partie suivante.
 
 \subsection{Partie 7 Bonus}
 
 Cette partie a pour but d'implementer les appels systèmes PutInt et GetInt, qui
-permettent de s'occuper des entier signé. Cette partie ne nous à pas posé de
-problème particulié, surtout grâce au fait de pouvoir utilisé les fonctions snprintf
+permettent de s'occuper des entiers signés. Cette partie ne nous a pas posés de
+problèmes particuliers, surtout grâce au fait de pouvoir utilisé les fonctions snprintf
 et sscanf.
 
 \subsection{Partie 8}
@@ -168,22 +168,22 @@ Nous n'avons malheureusement pas eu le temps de nous pencher sur cette partie-l�
 \newpage
 \section{Points délicats}
 
-Nos principales difficultés viennent de notre négligence vis à vis des tests de
-nos fonctions. Nous n'avons pas pris la peine de tester suffisament de cas limites.
+Nos principales difficultés viennent de notre négligence vis-à-vis des tests de
+nos fonctions. Nous n'avons pas pris la peine de tester suffisamment de cas limites.
 Nous avons eu de la chance pour les premières fonctions du devoir, les appels de
-ces fonctions dans les parties suivantes ne nous ont pas posé de problème. \\
+ces fonctions dans les parties suivantes ne nous ont pas posés de problèmes. \\
 
-Lorsque nous avons implémenter la partie 5, nous avons testé quelques cas limites
+Lorsque nous avons implémenté la partie 5, nous avons testé quelques cas-limites
 afin de vérifier son bon comportement. Ayant obtenu les résultats attendus, nous
 ne sommes pas attardés sur ses tests. \\
 
 Puis nous nous sommes attaqués à la partie 7. Notre fichier de test pour la partie
 7 faisait appel à PutChar, de la partie 5. Une fois arrivée à la phase de test de
-la partie 7, nous avons obtenu plusieurs erreurs d'origines inconnues. Malgrès
+la partie 7, nous avons obtenu plusieurs erreurs d'origines inconnues. Malgré
 plusieurs tentatives différentes, nous n'avons pas réussi à corriger ces erreurs.
-Nous avons donc décider d'essayer d'isoler le problème et avons rajouter des \escape{0}
+Nous avons donc décidé d'essayer d'isoler le problème et avons rajouter des \escape{0}
 à la fin de chacune de nos sous-chaînes de caractères ainsi que des appels à printf.
-C'est à ce moment-là que nous nous sommes rendus compte que le problème ne venait
+C'est à ce moment-là que nous nous sommes rendu compte que le problème ne venait
 pas de GetString, mais bien de PutString. Il s'agissait d'un cas particulier de
 PutString que nous n'avions pas pris le temps de tester; la taille du buffer était
 un multiple de la taille de chaîne, ce qui avait pour effet de faire un tour de boucle
@@ -205,23 +205,23 @@ $ ~/nachos/code/userprog ./nachos -x ../test/<fichier_test>
 \subsection{Partie 1 à 3}
 
 Nous n'avons pas pris le temps de tester entièrement ces fonctions. Leur implémentation
-était relativement simple et elles ne semblaient pas posé problème par la suite.
+était relativement simple et elles ne semblaient pas posées problème par la suite.
 Nous pensons que ces fonctions se comportent normalement. De plus, les tests des
 parties 2 et 3 ne sont plus exécutables à cause de l'implémentation de la partie 4.
 
 \subsection{Partie 4 : PutChar}
 
-Pour cette partie, nous avons essayer d'attendre longtemps avant de taper le
-caractère en entrée, le taper "vite". Nous avons également essayer des caractères
+Pour cette partie, nous avons essayé d'attendre longtemps avant de taper le
+caractère en entrée, le taper "vite". Nous avons également essayé des caractères
 spéciaux comme \escape{n} ou \escape{0}.
 
 \subsection{Partie 5 : PutString}
 
 Pour les tests de cette fonction nous devions jouer sur le buffer
 MAX\_STRING\_SIZE et la chaîne de caractères entrée par l'utilisateur. Nous avons
-essayé un buffer petit par rapport à la chaîne, afin d'avoir plusieurs tour de boucle.
+essayé un buffer petit par rapport à la chaîne, afin d'avoir plusieurs tours de boucle.
 Nous avons également essayé des chaînes plus petites que le buffer. Des valeurs
-paires/impaires de taille. Un des cas que nous n'avions pas testé est un buffer petit
+paires/impaires de taille. Un des cas que nous n'avions pas testés est un buffer petit
 dont la taille est un diviseur de la taille de la chaîne de l'utilisateur (Taille
 4 pour le buffer et taille 16 pour la chaîne).
 
@@ -242,9 +242,9 @@ du temps.
 
 \subsection{Partie 7 : Bonus}
 
-Pour cette partie nous avons testé des entier positif et des entiers négatifs, afin
-de voir si le signe était bien respecté, nous avons pas traité les cas particulier
-où il y avaient d'autre caractères que le signe négatif et/ou des chiffres.
+Pour cette partie nous avons testé des entiers positifs et des entiers négatifs, afin
+de voir si le signe était bien respecté, nous n'avons pas traité les cas particuliers
+où il y avait d'autres caractères que le signe négatif et/ou des chiffres.
 
 %-------------------------------------------------------------------------------
 % END
