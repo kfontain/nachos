@@ -98,8 +98,8 @@ faire comprendre en quoi lire un caractère avant d'être averti qu'un caractèr
 soit disponible. En effet, la lecture se faisant au moment de l'appel, si nous
 n'avons pas l'assurance qu'un caractère soit disponible, nous allons lire ce
 qu'il y a dans le buffer, autrement dit nous allons obtenir un caractère inattendu. \\
-Les fichiers de tests ne peuvent être plus executés à cause de la partie 4, mais
-nous pensons avoir bien réussi cette partie.
+Les tests ./nachos -c et ./nachos -sc ne peuvent plus être executés à cause de
+la partie 4, mais nous pensons avoir bien réussi cette partie.
 
 \subsection{Partie 3}
 Cette troisième partie a pour but de rendre synchrones les fonctions de la partie
@@ -142,12 +142,21 @@ le registre 2 lorsque celle-ci est déclarée à valeur entière.
 
 \subsection{Partie 7}
 Cette partie a pour but d'implémenter les appels systèmes GetChar et GetString.
+
+Comme à la partie 5, où nous avons créé la fonction copyStringFromMachine, nous
+avons créé la fonction copyStringToMachine. Cet fonction copie une chaine de
+caractère du monde noyau vers le monde utilisateur, nous avons donc choisi de la
+mettre dans le même fichier que la fonction copyStringFromMachine.\\
+
 Cette partie nous a posé beaucoup de problèmes et nous y avons passer beaucoup de
 temps. Expliquée plus en détails dans la partie suivante.
 
 \subsection{Partie 7 Bonus}
 
-GCharlet001
+Cette partie a pour but d'implementer les appels systèmes PutInt et GetInt, qui
+permettent de s'occuper des entier signé. Cette partie ne nous à pas posé de
+problème particulié, surtout grâce au fait de pouvoir utilisé les fonctions snprintf
+et sscanf.
 
 \subsection{Partie 8}
 Nous n'avons malheureusement pas eu le temps de nous pencher sur cette partie-là.
@@ -178,22 +187,12 @@ C'est à ce moment-là que nous nous sommes rendus compte que le problème ne ve
 pas de GetString, mais bien de PutString. Il s'agissait d'un cas particulier de
 PutString que nous n'avions pas pris le temps de tester; la taille du buffer était
 un multiple de la taille de chaîne, ce qui avait pour effet de faire un tour de boucle
-de plus que prévu.
-
-
-%-------------------------------------------------------------------------------
-% Limitations
-%-------------------------------------------------------------------------------
-
-\section{Limitations}
-
-TODO
+de plus que prévu.\\
 
 %-------------------------------------------------------------------------------
 % Tests
 %-------------------------------------------------------------------------------
 
-\newpage
 \section{Tests}
 
 Les fichiers de tests se trouvent dans le dossier /code/test. Ils sont exécutables
@@ -243,7 +242,9 @@ du temps.
 
 \subsection{Partie 7 : Bonus}
 
-GCharlet001
+Pour cette partie nous avons testé des entier positif et des entiers négatifs, afin
+de voir si le signe était bien respecté, nous avons pas traité les cas particulier
+où il y avaient d'autre caractères que le signe négatif et/ou des chiffres.
 
 %-------------------------------------------------------------------------------
 % END
