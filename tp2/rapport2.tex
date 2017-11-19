@@ -1,0 +1,145 @@
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[frenchb]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{minted} %compiler avec la commande -shell-escape
+\usepackage{graphicx}
+
+%% Todo List
+\usepackage{enumitem,amssymb}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\newcommand{\done}{\rlap{$\square$}{\raisebox{2pt}{\large\hspace{1pt}\cmark}}%
+\hspace{-2.5pt}}
+\newcommand{\wontfix}{\rlap{$\square$}{\large\hspace{1pt}\xmark}}
+\newcommand*{\escape}[1]{\texttt{\textbackslash#1}}
+\newcommand*{\escapeI}[1]{\texttt{\expandafter\string\csname #1\endcsname}}
+\newcommand*{\escapeII}[1]{\texttt{\char`\\#1}}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\setlength{\parskip}{.5em}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+%-------------------------------------------------------------------------------
+% TITLE PAGE
+%-------------------------------------------------------------------------------
+
+\title
+{
+	\LARGE{NACHOS : Entrées/Sorties}
+	\HRule \\ [0.5cm]
+	\LARGE \textbf{\uppercase{Devoir 1}}
+	\HRule \\ [0.5cm]
+}
+
+\author{Guillaume CHARLET \\ Kenji FONTAINE}
+
+\begin{document}
+
+\null  % Empty line
+\nointerlineskip  % No skip for prev line
+\vfill
+\let\snewpage \newpage
+\let\newpage \relax
+\maketitle
+\let \newpage \snewpage
+\vfill
+\break % page break
+
+%-------------------------------------------------------------------------------
+% Table of Contents
+%-------------------------------------------------------------------------------
+
+\tableofcontents
+\newpage
+
+%-------------------------------------------------------------------------------
+% Introduction
+%-------------------------------------------------------------------------------
+
+\section{Description du projet}
+Ce travail a été réalisé dans un cadre universitaire,  par des étudiants en
+Master 1 informatique à l'université de Bordeaux. \\
+Un système d'exploitation est un ensemble de programmes permettant de diriger
+l'utilisation des ressources d'un ordinateur. Il assure la liaison entre
+l'utilisateur, les applications et le matériel.
+Nachos est un processus permettant d'émuler un système d'exploitation et du
+matériel. \\
+L'objectif de ce devoir est de mettre en place sous Nachos un système
+d'entrées-sorties minimales, permettant d'exécuter de petits programmes.
+L'ensemble des modifications apportées sont entre balises \#ifdef CHANGED et
+\#endif. \\
+
+%-------------------------------------------------------------------------------
+% Bilan
+%-------------------------------------------------------------------------------
+
+\section{Bilan}
+
+\subsection{Partie 1}
+L'objectif de cette première partie est de permettre à l'utilisateur de créer et
+de manipuler des threads utilisateur en utilisant des appels systèmes qui
+permettront de manipuler ces threads (créer, lancer, terminer). Le thread ainsi
+crée partage le même espace mémoire que le thread père (AddrSpace).
+L'implémentation de ces fonctions est assez primitive et sera améliorée dans la
+partie 2. Cette première partie s'est relativement bien passée et ne nous a
+pas posé beaucoup de problème.
+
+\subsection{Partie 2}
+Cette partie a pour but d'améliorer les fonctions implémentées dans la partie 1.
+Nous devons permettre la création de plusieurs threads et faire en sorte qu'ils
+s'éxecutent bien. La gestion de plusieurs threads en utilisant une BitMap nous a
+posé des difficultés et n'est pas fonctionnelle.
+
+\subsection{Partie 3}
+Nous n'avons pas eu le temps de traiter cette partie.
+
+\subsection{Partie 4}
+Même chose que pour la partie 3.
+
+%-------------------------------------------------------------------------------
+% Points délicats
+%-------------------------------------------------------------------------------
+
+\newpage
+\section{Points délicats}
+
+Nos problèmes viennent principalement de la partie 2. La gestion de plusieurs
+threads en utilisant la BitMap n'est pas fonctionnelle. En lançant la création
+de plusieurs threads dans le thread principal, nous n'arrivons qu'à lancer le
+thread principal ainsi que le premier thread de tous les threads que nous
+voulons créer.
+
+%-------------------------------------------------------------------------------
+% Tests
+%-------------------------------------------------------------------------------
+
+\section{Tests}
+
+Les fichiers de tests se trouvent dans le dossier /code/test. Ils sont exécutables
+en utilisant la commande suivante :
+
+\begin{minted}{bash}
+$ ~/nachos/code/userprog ./nachos -rs 1234 -x ../test/<fichier_test>
+\end{minted}
+
+\subsection{Partie 1 et 2}
+
+Ces deux parties étant liées, il n'y a qu'un seul fichier de test. Le fichier
+est disponible dans le dossier /code/test. Il est éxecutable en utilisant la
+commande ci-dessus. Nous observons que le thread principal printant "main" ainsi
+que seul le premier thread crée dans la boucle for sont lancés.
+
+
+%-------------------------------------------------------------------------------
+% END
+%-------------------------------------------------------------------------------
+
+\end{document}
